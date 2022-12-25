@@ -64,6 +64,7 @@
 		3802DFFF2958783700DD2E17 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				89603AB329507B53004F3054 /* ViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -90,7 +91,6 @@
 				89603AAF29507B53004F3054 /* AppDelegate.swift */,
 				89603AB129507B53004F3054 /* SceneDelegate.swift */,
 				3802DFFF2958783700DD2E17 /* Controller */,
-				89603AB329507B53004F3054 /* ViewController.swift */,
 				3802DFFE295877EE00DD2E17 /* Model */,
 				3802DFFD2958774000DD2E17 /* View */,
 				89603AB829507B54004F3054 /* Assets.xcassets */,
