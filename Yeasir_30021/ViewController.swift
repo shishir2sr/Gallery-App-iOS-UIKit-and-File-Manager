@@ -2,7 +2,7 @@ import UIKit
 import PhotosUI
 
 class ViewController: UIViewController {
-    var changeImagePicker = true
+    
     var movieData = [
         UIImage(named: "bmx"),
         UIImage(named: "filmmaker"),
@@ -13,6 +13,9 @@ class ViewController: UIViewController {
         UIImage(named: "godzilla"),
         UIImage(named: "joker"),
     ]
+    
+    var imagePicker = PickImage()
+    var changeImagePicker = true
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -28,33 +31,21 @@ class ViewController: UIViewController {
     
     @IBAction func floatingActionButton(_ sender: UIButton) {
         print("foating action button pressed")
-        if changeImagePicker{
-            pickImage()
-            changeImagePicker = !changeImagePicker
-        }else{
-            pickImageUsingImagePicker()
-            changeImagePicker = !changeImagePicker
-        }
-        
+        pickeImage()
     }
     
-    
-    func pickImage() {
-           var picker = PHPickerConfiguration()
-        picker.filter = .images
-           picker.selectionLimit = 3
-           let controller = PHPickerViewController(configuration: picker)
-           controller.delegate = self
-           present(controller, animated: true, completion: nil)
-       }
-    
-    
-    func pickImageUsingImagePicker() {
-           let picker = UIImagePickerController()
-           picker.sourceType = .photoLibrary
-           picker.delegate = self
-           present(picker, animated: true, completion: nil)
-       }
+   // MARK: ??
+    func pickeImage(){
+        if changeImagePicker{
+            let controller = imagePicker.pickImage(delegate: self)
+            present(controller, animated: true,completion: nil)
+            changeImagePicker = !changeImagePicker
+        }else{
+            let controller = imagePicker.pickImageUsingImagePicker(delegate: self)
+            present(controller, animated: true,completion: nil)
+            changeImagePicker = !changeImagePicker
+        }
+    }
     
     
     // grid layout
