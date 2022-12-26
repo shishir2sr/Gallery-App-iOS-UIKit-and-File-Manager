@@ -37,15 +37,15 @@ class ViewController: UIViewController {
     }
     
     
+    // Navigation item configuration
     func configNavItems(){
          // nav buttons
         let listButton = configNavigationBar.configRightBarButtons(imageID: "rectangle.grid.1x2.fill", target: self, action: #selector(listButtonPressed))
         let gridButton = configNavigationBar.configRightBarButtons(imageID: "rectangle.grid.2x2.fill", target: self, action: #selector(gridButtonPressed))
-      
         self.navigationItem.rightBarButtonItems = [listButton, gridButton]
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: configNavigationBar.navTitle(title: "Gallery"))
         
-    } //config items
+    }
     
     @objc func gridButtonPressed() {
         galleryConfig.performNavButtonAction(to: galleryConfig.gridLayoutSection, view: self, collectionView: self.collectionView)

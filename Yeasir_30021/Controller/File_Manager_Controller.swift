@@ -14,7 +14,7 @@ struct FileManagerController{
          view.present(actionSheet, animated: true, completion: nil)
      }
     
-    func saveImage(image: UIImage) {
+    private func saveImage(image: UIImage) {
                 let fileManager = FileManager.default
                 guard let documentDirURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else{
                     return
@@ -27,12 +27,13 @@ struct FileManagerController{
                 }catch{
                     print(error)
                 }
-                
+        
                 //MARK: Write
                 let image = image
                 let data = image.pngData()
                 let fileURL = folderURL.appendingPathComponent(" image - \(Date.now.formatted(date: .omitted, time: .shortened))")
         print(fileURL.path)
                 fileManager.createFile(atPath: fileURL.path, contents: data)
+        
        }
 }
