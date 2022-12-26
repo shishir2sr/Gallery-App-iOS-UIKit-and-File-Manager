@@ -27,25 +27,13 @@ class ViewController: UIViewController {
         collectionView.collectionViewLayout = listLayoutSection()
         
     }
- 
     
     @IBAction func floatingActionButton(_ sender: UIButton) {
         print("foating action button pressed")
-        pickeImage()
+        imagePicker.pickeImageFiles(delegate: self)
     }
     
-   // MARK: ??
-    func pickeImage(){
-        if changeImagePicker{
-            let controller = imagePicker.pickImage(delegate: self)
-            present(controller, animated: true,completion: nil)
-            changeImagePicker = !changeImagePicker
-        }else{
-            let controller = imagePicker.pickImageUsingImagePicker(delegate: self)
-            present(controller, animated: true,completion: nil)
-            changeImagePicker = !changeImagePicker
-        }
-    }
+ 
     
     
     // grid layout
@@ -100,10 +88,10 @@ class ViewController: UIViewController {
     } //config items
     
     @objc func gridButtonPressed() {
-        
+        self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.customView?.isUserInteractionEnabled = false
         collectionView.startInteractiveTransition(to: gridLayoutSection()){ [weak self] _,_ in
                 guard let self = self else{return}
-            
+                self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.customView?.isUserInteractionEnabled = true
         }
         collectionView.finishInteractiveTransition()
         print("grid layout pressed")
@@ -174,6 +162,7 @@ extension ViewController:UICollectionViewDelegate, UICollectionViewDataSource{
                 }
           
                 let folderURL = documentDirURL.appendingPathComponent("images")
+                
                 do{
                     try fileManager.createDirectory(at: folderURL, withIntermediateDirectories: true)
                 }catch{
@@ -184,6 +173,7 @@ extension ViewController:UICollectionViewDelegate, UICollectionViewDataSource{
                 let image = image
                 let data = image.pngData()
                 let fileURL = folderURL.appendingPathComponent(" image - \(Date.now.formatted(date: .omitted, time: .shortened))")
+        print(fileURL.path)
                 fileManager.createFile(atPath: fileURL.path, contents: data)
        }
     
