@@ -31,9 +31,14 @@ struct FileManagerController{
                 //MARK: Write
                 let image = image
                 let data = image.pngData()
-                let fileURL = folderURL.appendingPathComponent(" image - \(Date.now.formatted(date: .omitted, time: .shortened))")
+                let fileURL = folderURL.appendingPathComponent(" image- \(Date.now.formatted(date: .omitted, time: .shortened))")
         print(fileURL.path)
                 fileManager.createFile(atPath: fileURL.path, contents: data)
         
        }
+    
+    
+    
+    
+    
 }

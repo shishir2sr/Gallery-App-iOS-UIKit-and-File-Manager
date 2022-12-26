@@ -37,6 +37,8 @@ class ViewController: UIViewController {
     }
     
     
+    
+    
     // Navigation item configuration
     func configNavItems(){
          // nav buttons
@@ -89,6 +91,7 @@ extension ViewController:UICollectionViewDelegate, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CVCell", for: indexPath) as! CVCell
         cell.imageView.image = movieData[indexPath.row]
+        cell.layer.cornerRadius = 8
         return cell
     }
     
