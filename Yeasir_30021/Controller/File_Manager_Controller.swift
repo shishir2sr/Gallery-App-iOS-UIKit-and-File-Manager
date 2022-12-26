@@ -11,7 +11,6 @@ struct FileManagerController{
          }))
          
          actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-         
          view.present(actionSheet, animated: true, completion: nil)
      }
     

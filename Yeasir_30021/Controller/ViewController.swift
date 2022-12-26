@@ -58,32 +58,26 @@ class ViewController: UIViewController {
     } //config items
     
     @objc func gridButtonPressed() {
-        self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.customView?.isUserInteractionEnabled = false
-        collectionView.startInteractiveTransition(to: galleryConfig.gridLayoutSection()){ [weak self] _,_ in
-            
-            guard let self = self else {return}
-            self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.customView?.isUserInteractionEnabled = true
-
-        }
-        collectionView.finishInteractiveTransition()
-        print("grid layout pressed")
+        
+        galleryConfig.performNavButtonAction(to: galleryConfig.gridLayoutSection, view: self, collectionView: self.collectionView)
         
     }
     
     // list layout
     @objc func listButtonPressed() {
-
-        self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.customView?.isUserInteractionEnabled = false
+        galleryConfig.performNavButtonAction(to: galleryConfig.listLayoutSection, view: self, collectionView: self.collectionView)
+    }
+    
+    
+    func performNavButtonAction(to layOutFunction: () -> UICollectionViewLayout){
+        let navigationTopItems = self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.customView
         
-        collectionView.startInteractiveTransition(to: galleryConfig.listLayoutSection()){ [weak self] _,_ in
-            guard let self = self else{return}
-
-            self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.customView?.isUserInteractionEnabled = true
+        navigationTopItems?.isUserInteractionEnabled = false
+        
+        collectionView.startInteractiveTransition(to: layOutFunction()){  _,_ in
+            navigationTopItems?.isUserInteractionEnabled = true
         }
-        
         collectionView.finishInteractiveTransition()
-        print("list layout pressed")
-        
     }
     
     private func configCollectionView(){
@@ -110,35 +104,9 @@ extension ViewController:UICollectionViewDelegate, UICollectionViewDataSource{
     }
     
     
-    
-    
-    func saveImage(image: UIImage) {
-                let fileManager = FileManager.default
-                guard let documentDirURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else{
-                    return
-                }
-          
-                let folderURL = documentDirURL.appendingPathComponent("images")
-                
-                do{
-                    try fileManager.createDirectory(at: folderURL, withIntermediateDirectories: true)
-                }catch{
-                    print(error)
-                }
-                
-                //MARK: Write
-                let image = image
-                let data = image.pngData()
-                let fileURL = folderURL.appendingPathComponent(" image - \(Date.now.formatted(date: .omitted, time: .shortened))")
-        print(fileURL.path)
-                fileManager.createFile(atPath: fileURL.path, contents: data)
-       }
-    
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         movieData.count
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CVCell", for: indexPath) as! CVCell

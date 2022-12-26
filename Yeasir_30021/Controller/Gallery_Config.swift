@@ -31,4 +31,16 @@ struct GalleryConfiguration{
         return UICollectionViewCompositionalLayout(section: section)
     }
     
+    
+    func performNavButtonAction(to layOutFunction: () -> UICollectionViewLayout, view: ViewController, collectionView: UICollectionView){
+        
+        let navigationTopItems = view.navigationController?.navigationBar.topItem?.rightBarButtonItem?.customView
+        navigationTopItems?.isUserInteractionEnabled = false
+        
+        collectionView.startInteractiveTransition(to: layOutFunction()){  _,_ in
+            navigationTopItems?.isUserInteractionEnabled = true
+        }
+        collectionView.finishInteractiveTransition()
+    }
+    
 }
