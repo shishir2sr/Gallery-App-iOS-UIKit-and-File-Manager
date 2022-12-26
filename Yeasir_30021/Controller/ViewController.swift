@@ -19,6 +19,9 @@ class ViewController: UIViewController {
     
     var galleryConfig = GalleryConfiguration()
     
+    var fileManagerController = FileManagerController()
+    
+    
     @IBOutlet weak var collectionView: UICollectionView!
     
     override func viewDidLoad() {
@@ -97,7 +100,7 @@ extension ViewController:UICollectionViewDelegate, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if let image = movieData[indexPath.row]{
-            showActionSheet(image: image)
+            fileManagerController.showActionSheet(image: image, view: self)
         }
         else{
             return
@@ -106,18 +109,7 @@ extension ViewController:UICollectionViewDelegate, UICollectionViewDataSource{
         
     }
     
-    func showActionSheet(image:UIImage){
-         let actionSheet = UIAlertController(title: "Save Image", message: "Do you want to save this image?", preferredStyle: .actionSheet)
-         
-         actionSheet.addAction(UIAlertAction(title: "Save", style: .default, handler: {[weak self] (action:UIAlertAction) in
-             guard let self = self else { return}
-             self.saveImage(image: image)
-         }))
-         
-         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-         
-         self.present(actionSheet, animated: true, completion: nil)
-     }
+    
     
     
     func saveImage(image: UIImage) {
