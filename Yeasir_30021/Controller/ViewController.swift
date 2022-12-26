@@ -17,6 +17,8 @@ class ViewController: UIViewController {
     var imagePicker = PickImage()
     var changeImagePicker = true
     
+    var galleryConfig = GalleryConfiguration()
+    
     @IBOutlet weak var collectionView: UICollectionView!
     
     override func viewDidLoad() {
@@ -24,7 +26,7 @@ class ViewController: UIViewController {
         
         configNavItems()
         configCollectionView()
-        collectionView.collectionViewLayout = listLayoutSection()
+        collectionView.collectionViewLayout = galleryConfig.listLayoutSection()
         
     }
     
@@ -32,41 +34,6 @@ class ViewController: UIViewController {
         print("foating action button pressed")
         imagePicker.pickeImageFiles(delegate: self)
     }
-    
- 
-    
-    
-    // grid layout
-    private func gridLayoutSection() -> UICollectionViewLayout {
-               
-        let item1 = CollectionVL.createItem(height: .fractionalHeight(1), width: .fractionalWidth(1/2), spacing: 3)
-
-        let horizontalGroup = CollectionVL.createGroup(height: .fractionalHeight(2/9), width: .fractionalWidth(1), alignment: .horizontal, items: [item1,item1])
-        
-        horizontalGroup.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 3, bottom: 0, trailing: 3)
-        
-                let section = NSCollectionLayoutSection(group: horizontalGroup)
-        section.orthogonalScrollingBehavior = .none
-               
-    
-                return UICollectionViewCompositionalLayout(section: section)
-        } // grid Layout
-    
-    // List layout
-    private func listLayoutSection() -> UICollectionViewLayout {
-               
-        let item1 = CollectionVL.createItem(height: .fractionalHeight(1), width: .fractionalWidth(1), spacing: 3)
-
-        let group = CollectionVL.createGroup(height: .fractionalHeight(1/2), width: .fractionalWidth(1), alignment: .horizontal, items: [item1,item1])
-        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 3, bottom: 0, trailing: 3)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        
-        return UICollectionViewCompositionalLayout(section: section)
-        } // List Layout
-    
-    
-    
     
     
     func configNavItems(){
@@ -89,9 +56,11 @@ class ViewController: UIViewController {
     
     @objc func gridButtonPressed() {
         self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.customView?.isUserInteractionEnabled = false
-        collectionView.startInteractiveTransition(to: gridLayoutSection()){ [weak self] _,_ in
-                guard let self = self else{return}
-                self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.customView?.isUserInteractionEnabled = true
+        collectionView.startInteractiveTransition(to: galleryConfig.gridLayoutSection()){ [weak self] _,_ in
+            
+            guard let self = self else {return}
+            self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.customView?.isUserInteractionEnabled = true
+
         }
         collectionView.finishInteractiveTransition()
         print("grid layout pressed")
@@ -103,7 +72,7 @@ class ViewController: UIViewController {
 
         self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.customView?.isUserInteractionEnabled = false
         
-        collectionView.startInteractiveTransition(to: listLayoutSection()){ [weak self] _,_ in
+        collectionView.startInteractiveTransition(to: galleryConfig.listLayoutSection()){ [weak self] _,_ in
             guard let self = self else{return}
 
             self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.customView?.isUserInteractionEnabled = true
@@ -113,10 +82,6 @@ class ViewController: UIViewController {
         print("list layout pressed")
         
     }
-    
-    
-    
-   
     
     private func configCollectionView(){
         collectionView.delegate = self
