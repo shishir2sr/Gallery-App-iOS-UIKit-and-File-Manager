@@ -16,13 +16,12 @@ class ViewController: UIViewController {
     
     var imagePicker = PickImage()
     var changeImagePicker = true
-    
     var galleryConfig = GalleryConfiguration()
-    
     var fileManagerController = FileManagerController()
-    
+    var configNavigationBar = NavigationConfig()
     
     @IBOutlet weak var collectionView: UICollectionView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,51 +33,30 @@ class ViewController: UIViewController {
     }
     
     @IBAction func floatingActionButton(_ sender: UIButton) {
-        print("foating action button pressed")
         imagePicker.pickeImageFiles(delegate: self)
     }
     
     
     func configNavItems(){
          // nav buttons
-        let listButton = UIBarButtonItem(image: UIImage(systemName: "rectangle.grid.1x2.fill")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(listButtonPressed))
-        
-        let gridButton = UIBarButtonItem(image: UIImage(systemName: "rectangle.grid.2x2.fill")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(gridButtonPressed))
-         
-        //nav title
-        let navTitle = UILabel()
-        navTitle.textColor = UIColor.darkGray
-        navTitle.text = "Gallery"
-        navTitle.font = UIFont(name: "HelveticaNeue-Bold", size: 22.0)!
-        
-        //configuration
+        let listButton = configNavigationBar.configRightBarButtons(imageID: "rectangle.grid.1x2.fill", target: self, action: #selector(listButtonPressed))
+        let gridButton = configNavigationBar.configRightBarButtons(imageID: "rectangle.grid.2x2.fill", target: self, action: #selector(gridButtonPressed))
+      
         self.navigationItem.rightBarButtonItems = [listButton, gridButton]
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: navTitle)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: configNavigationBar.navTitle(title: "Gallery"))
         
     } //config items
     
     @objc func gridButtonPressed() {
-        
         galleryConfig.performNavButtonAction(to: galleryConfig.gridLayoutSection, view: self, collectionView: self.collectionView)
-        
     }
-    
+
     // list layout
     @objc func listButtonPressed() {
         galleryConfig.performNavButtonAction(to: galleryConfig.listLayoutSection, view: self, collectionView: self.collectionView)
     }
     
     
-    func performNavButtonAction(to layOutFunction: () -> UICollectionViewLayout){
-        let navigationTopItems = self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.customView
-        
-        navigationTopItems?.isUserInteractionEnabled = false
-        
-        collectionView.startInteractiveTransition(to: layOutFunction()){  _,_ in
-            navigationTopItems?.isUserInteractionEnabled = true
-        }
-        collectionView.finishInteractiveTransition()
-    }
     
     private func configCollectionView(){
         collectionView.delegate = self
